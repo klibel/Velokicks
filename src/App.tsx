@@ -15,7 +15,6 @@ interface CartItem {
   shoe: Shoe;
   quantity: number;
 }
-// ... Todos tus imports se mantienen idénticos arriba
 
 export default function App() {
   const { shoes, loading, error } = useFetchShoes();
@@ -42,7 +41,7 @@ export default function App() {
 
   useEffect(() => {
     const baseTitle = 'Velokicks | Calzado deportivo premium y carrito de compras';
-    const baseDescription = 'Velokicks es tu tienda online de calzado deportivo premium: zapatillas para running, fútbol y entrenamiento con carrito persistente y checkout seguro.';
+    const baseDescription = 'Velokicks is tu tienda online de calzado deportivo premium: zapatillas para running, fútbol y entrenamiento con carrito persistente y checkout seguro.';
 
     let title = baseTitle;
     let description = baseDescription;
@@ -122,6 +121,7 @@ export default function App() {
     }
   }, [loading, shoes, selectedProduct]);
 
+  // Vista de Checkout de Pago Seguro
   if (currentView === 'checkout') {
     return <CheckoutPage onBack={openHome} />;
   }
@@ -129,33 +129,48 @@ export default function App() {
   return (
     <div style={styles.appContainer}>
       
-      {/* RENDERIZADO CONDICIONAL DE CONTENIDO DEBAJO DEL DRAWER GLOBAL */}
       {selectedProduct ? (
-        <ProductDetail 
-          product={selectedProduct} 
-          allShoes={shoes} // ⚡ Pasamos toda la lista para las recomendaciones
-          cartCount={cartCount} // ⚡ Pasamos el contador de ítems para el carrito local del navbar
-          onCartNavigate={openCart} // ⚡ Función para desplegar el panel de compras desde el detalle
-          onBack={() => setSelectedProduct(null)}
-          onAddToCart={(shoe) => {
-            addToCart(shoe);
-            gsap.fromTo('nav button svg', { scale: 0.7 }, { scale: 1, duration: 0.3, ease: 'back.out(2)' });
-          }}  
-          onProductSelect={(shoe) => setSelectedProduct(shoe)} // ⚡ El hook de actualización mágica sin recargar
-        />
+        /* Envoltura del detalle del producto para congelar su cabecera interna si aplica */
+        <div style={styles.detailWrapper}>
+          <ProductDetail 
+            product={selectedProduct} 
+            allShoes={shoes} 
+            cartCount={cartCount} 
+            onCartNavigate={openCart} 
+            onBack={() => setSelectedProduct(null)}
+            onAddToCart={(shoe) => {
+              addToCart(shoe);
+              gsap.fromTo('nav button svg', { scale: 0.7 }, { scale: 1, duration: 0.3, ease: 'back.out(2)' });
+            }}  
+            onProductSelect={(shoe) => setSelectedProduct(shoe)} 
+          />
+        </div>
       ) : (
         <>
-          <Navbar 
-            cartCount={cartCount}
-            onCartClick={openCart}
-            onSearchSubmit={(query) => {
-              setSearchTerm(query);
-              const catalogSection = document.getElementById('shop-catalog');
-              if (catalogSection) {
-                catalogSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            }}
-          />
+          {/* BARRA DE NAVEGACIÓN PRINCIPAL FIXED / STICKY */}
+          <div style={styles.stickyNavbarContainer}>
+            <Navbar 
+              cartCount={cartCount}
+              onCartClick={openCart}
+              onSearchSubmit={(query) => {
+                setSearchTerm(query);
+                const catalogSection = document.getElementById('shop-catalog');
+                if (catalogSection) {
+                  // Desplazamiento compensando la altura de la navbar fija en móviles
+                  const offset = 70;
+                  const bodyRect = document.body.getBoundingClientRect().top;
+                  const elementRect = catalogSection.getBoundingClientRect().top;
+                  const elementPosition = elementRect - bodyRect;
+                  const offsetPosition = elementPosition - offset;
+
+                  window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                  });
+                }
+              }}
+            />
+          </div>
 
           <main style={styles.mainContent}>
             {loading && (
@@ -230,15 +245,41 @@ export default function App() {
   );
 }
 
-// ... Tus estilos abajo se mantienen exactamente iguales
-
 const styles: { [key: string]: React.CSSProperties } = {
-  appContainer: { width: '100%', minHeight: '100vh', backgroundColor: '#ffffff', position: 'relative' },
-  mainContent: { width: '100%' },
+  appContainer: { 
+    width: '100%', 
+    minHeight: '100vh', 
+    backgroundColor: '#ffffff', 
+    position: 'relative' 
+  },
+  
+  // ⚡ FIX: Cambiado a fixed para asegurar bloqueo absoluto en móviles
+  stickyNavbarContainer: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    zIndex: 1100,
+    backgroundColor: '#ffffff',
+    width: '100%',
+    boxShadow: '0 2px 10px rgba(0,0,0,0.05)' // Un toque premium sutil
+  },
+
+  detailWrapper: {
+    width: '100%',
+    position: 'relative',
+    paddingTop: '70px' // ⚡ NUEVO: Colchón de espacio para que la Navbar fixed no tape el detalle del producto
+  },
+
+  // ⚡ NUEVO: Empuja todo el catálogo hacia abajo para que la Navbar fixed no monte el Hero
+  mainContent: { 
+    width: '100%',
+    paddingTop: '70px' 
+  },
+  
   centerSection: { display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' },
   loadingText: { fontSize: '13px', fontWeight: 700, letterSpacing: '3px', color: '#000000' },
   errorText: { fontSize: '14px', fontWeight: 600, color: '#FF5722' },
-  heroSection: { width: '100%', height: '55vh', display: 'flex', backgroundColor: '#000000', overflow: 'hidden' },
+  heroSection: { width: '100%', height: '60vh', display: 'flex', backgroundColor: '#000000', overflow: 'hidden' },
   heroLeft: { width: '50%', height: '100%', padding: '0 80px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start' },
   heroRight: { width: '50%', height: '100%' },
   heroTitle: { fontSize: '52px', fontWeight: 900, letterSpacing: '-1px', color: '#ffffff', lineHeight: '1.1', marginBottom: '15px' },

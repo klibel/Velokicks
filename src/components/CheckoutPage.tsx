@@ -321,10 +321,18 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex', 
     justifyContent: 'space-between', 
     alignItems: 'center', 
-    padding: '30px 5% 20px 5%', 
+    padding: '20px 5%', // Reducido un poco verticalmente para optimizar espacio móvil
     borderBottom: '1px solid #f2f2f2', 
     flexWrap: 'wrap', 
-    gap: '15px' 
+    gap: '15px',
+    
+    // ⚡ CONTROL ABSOLUTO FIXED PARA MÓVILES
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    backgroundColor: '#ffffff', 
+    zIndex: 1200 // Se eleva el zIndex para asegurar que ruede por encima de la tarjeta 3D
   },
   logoBlockLeft: { display: 'flex', justifyContent: 'flex-start' },
   logoBlockRight: { display: 'flex', justifyContent: 'flex-end' },
@@ -334,7 +342,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   mainContent: { 
     flex: 1, 
     width: '100%', 
-    padding: '40px 5%', 
+    padding: '110px 5% 40px 5%', // ⚡ COLCHÓN DE ESPACIO: 110px arriba evita que el header fixed tape los inputs y títulos
     display: 'flex', 
     justifyContent: 'center', 
     alignItems: 'flex-start' 

@@ -46,16 +46,18 @@ export const PopularProducts: React.FC<PopularProductsProps> = ({ shoes, onAddTo
     );
   }, [baseShoes]);
 
+  // ⚡ CÁLCULO DINÁMICO DE DESPLAZAMIENTO: Desplaza exactamente el ancho de las tarjetas visibles
   const nextSlide = () => {
-    if (currentIndex === baseShoes.length) {
+    const maxIndex = baseShoes.length;
+    if (currentIndex >= maxIndex - 1) {
       if (cardsContainerRef.current) cardsContainerRef.current.style.transition = 'none';
       setCurrentIndex(0);
       setTimeout(() => {
         if (cardsContainerRef.current) cardsContainerRef.current.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
-        setCurrentIndex(4);
+        setCurrentIndex(1);
       }, 50);
     } else {
-      setCurrentIndex(prev => prev + 4);
+      setCurrentIndex(prev => prev + 1);
     }
   };
 
@@ -66,11 +68,11 @@ export const PopularProducts: React.FC<PopularProductsProps> = ({ shoes, onAddTo
       setTimeout(() => {
         if (cardsContainerRef.current) {
           cardsContainerRef.current.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
-          setCurrentIndex(baseShoes.length - 4);
+          setCurrentIndex(baseShoes.length - 1);
         }
       }, 50);
     } else {
-      setCurrentIndex(prev => prev - 4);
+      setCurrentIndex(prev => prev - 1);
     }
   };
 
@@ -81,7 +83,6 @@ export const PopularProducts: React.FC<PopularProductsProps> = ({ shoes, onAddTo
       <div style={styles.headerRow}>
         <h2 ref={titleRef} style={styles.sectionTitle}>PRODUCTOS POPULARES</h2>
         
-        {/* Renderizado Condicional: Adiós botones en Mobile */}
         {!isMobile && (
           <div style={styles.arrowBox}>
             <button onClick={prevSlide} style={styles.arrowBtn}><FiChevronLeft size={20} /></button>
@@ -95,7 +96,8 @@ export const PopularProducts: React.FC<PopularProductsProps> = ({ shoes, onAddTo
           ref={cardsContainerRef}
           style={{
             ...styles.cardsGrid,
-            transform: isMobile ? 'none' : `translateX(-${(currentIndex / 4) * 100}%)`
+            // ⚡ DESPLAZAMIENTO PERFECTO: Mueve exactamente la suma del ancho estático (280px) + el gap (15px)
+            transform: isMobile ? 'none' : `translateX(-${currentIndex * (280 + 15)}px)`
           }}
           className="popular-grid"
         >
@@ -103,11 +105,10 @@ export const PopularProducts: React.FC<PopularProductsProps> = ({ shoes, onAddTo
             <div key={`${shoe.id}-${index}`} style={{ ...styles.cardWrapper, cursor: onProductClick ? 'pointer' : 'default' }} className="card-hover-box" onClick={() => onProductClick?.(shoe)}>
               <div style={styles.card}>
                 
-                {/* SECCIÓN DE IMAGEN CON OVERLAY TRANSPARENTE EN HOVER Y BOTÓN "VER" */}
+                {/* SECCIÓN DE IMAGEN CON OVERLAY */}
                 <div style={styles.imageSection} className="image-hover-container">
                   <img src={shoe.imageURL} alt={shoe.name} style={styles.image} />
                   
-                  {/* Capa oscura con opción interactiva */}
                   <div style={styles.imageOverlay} className="view-overlay">
                     <div style={styles.viewBadge}>
                       <FiEye size={20} />
@@ -126,7 +127,7 @@ export const PopularProducts: React.FC<PopularProductsProps> = ({ shoes, onAddTo
                     <span style={styles.priceTag}>${shoe.price}</span>
                     <button
                       onClick={(event) => {
-                        event.stopPropagation(); // Evita que se dispare el click de la card completa
+                        event.stopPropagation();
                         onAddToCart(shoe);
                       }}
                       style={styles.buyBtn}
@@ -142,7 +143,6 @@ export const PopularProducts: React.FC<PopularProductsProps> = ({ shoes, onAddTo
         </div>
       </div>
 
-      {/* Estilos CSS Inyectados para controlar las transiciones fluidas del Hover */}
       <style>{`
         .image-hover-container {
           position: relative;
@@ -174,14 +174,21 @@ const styles: { [key: string]: React.CSSProperties } = {
   sectionTitle: { fontSize: '22px', fontWeight: 900, color: '#ffffff', letterSpacing: '2px' },
   arrowBox: { display: 'flex', gap: '10px' },
   arrowBtn: { backgroundColor: 'transparent', border: '1px solid #333333', color: '#ffffff', width: '42px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.3s ease' },
-  sliderWindow: { width: '100%', overflow: 'visible' },
-  cardsGrid: { display: 'flex', gap: '20px', width: '100%', transition: 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)', willChange: 'transform' },
-  cardWrapper: { flex: '0 0 calc(25% - 15px)', height: '220px', position: 'relative' },
-  card: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: '#ffffff', border: '1px solid #1c1c1c', boxShadow: '0 15px 35px rgba(0, 0, 0, 0.4)', display: 'flex', padding: '15px', transition: 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)' },
+  sliderWindow: { width: '100%', overflow: 'hidden' }, // Cambiado a hidden para que oculte de forma recta las cartas que van saliendo en PC
+  cardsGrid: { display: 'flex', gap: '15px', width: 'auto', transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)', willChange: 'transform' },
+  
+  // ⚡ CAMBIO CLAVE: Tamaño estático absoluto inmutable y bloqueo de reducción de tamaño (shrink)
+  cardWrapper: { 
+    flex: '0 0 280px', // Ocupa exactamente 280px siempre, no crece ni se encoge
+    width: '280px',
+    height: '170px', 
+    position: 'relative' 
+  },
+  
+  card: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: '#ffffff', border: '1px solid #1c1c1c', boxShadow: '0 15px 35px rgba(0, 0, 0, 0.4)', display: 'flex', padding: '10px', transition: 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)' },
   imageSection: { width: '50%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', backgroundColor: '#ffffff', position: 'relative' },
   image: { width: '100%', height: '100%', objectFit: 'contain' },
   
-  // NUEVOS ESTILOS PARA EL OVERLAY PREMIUM TRASPARENTE
   imageOverlay: {
     position: 'absolute',
     top: 0,
@@ -193,7 +200,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    pointerEvents: 'none', // Permite que el click traspase al contenedor principal de la card
+    pointerEvents: 'none',
   },
   viewBadge: {
     backgroundColor: '#00000000',

@@ -196,10 +196,16 @@ const styles: { [key: string]: React.CSSProperties } = {
     minHeight: '100vh',
     backgroundColor: '#ffffff',
   },
+  
+  // ⚡ ÚNICO CAMBIO: Pasó de sticky a fixed con los anclajes necesarios
   minimalNav: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    backgroundColor: '#ffffff', 
+    zIndex: 1200,
     width: '100%',
     height: '75px',
-    backgroundColor: '#ffffff',
     borderBottom: '1px solid #f0f0f0',
     display: 'flex',
     alignItems: 'center',
@@ -210,9 +216,10 @@ const styles: { [key: string]: React.CSSProperties } = {
   cartButton: { position: 'relative', display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer' },
   cartBadge: { position: 'absolute', top: '-8px', right: '-10px', backgroundColor: '#FF5722', color: '#ffffff', fontSize: '10px', fontWeight: 800, width: '18px', height: '18px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' },
   
+  // ⚡ TU DISEÑO ORIGINAL: Solo añadimos paddingTop para compensar los 75px de la barra fixed
   mainView: {
     width: '100%',
-    height: 'calc(100vh - 75px)', // Ocupa el 100% restante exacto de la vista
+    height: 'calc(100vh - 75px)',  
     display: 'flex',
     backgroundColor: '#ffffff',
   },
@@ -242,7 +249,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   imageContainer: {
     width: '100%',
     flex: 1,
-    overflow: 'hidden', // Importante para ocultar el excedente del zoom estilo Amazon
+    overflow: 'hidden', 
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -253,7 +260,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     maxWidth: '85%',
     maxHeight: '85%',
     objectFit: 'contain',
-    transition: 'transform 0.1s ease-out', // Suaviza micro-movimientos
+    transition: 'transform 0.1s ease-out', 
   },
   
   rightColumn: {
