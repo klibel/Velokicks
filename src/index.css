@@ -1,0 +1,393 @@
+/* ==========================================================================
+   1. CONFIGURACIÓN BASE Y RESETEO GLOBAL
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+  overflow-x: hidden;
+}
+
+
+/* ==========================================================================
+   2. INTERFACES Y HOVERS PREMIUM (ESCRITORIO / PC)
+   ========================================================================== */
+
+/* --- Links Nav PC --- */
+.hover-link {
+  transition: color 0.2s ease;
+}
+.hover-link:hover {
+  color: #FF5722 !important;
+}
+
+/* Ocultar elementos móviles en PC */
+.mobile-only-action {
+  display: none !important;
+}
+
+/* --- Navbar: Input Expansivo de PC con Borde de Foco Eficiente --- */
+@media (min-width: 769px) {
+  .navbar-search-form-pc {
+    width: 40px;
+    transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    justify-content: flex-end;
+  }
+  
+  .navInputPC {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    padding-left: 5px;
+  }
+  
+  /* Borde destacado activo cuando el usuario expande y usa el input */
+  .navbar-search-form-pc.is-active-pc {
+    border-color: #000000 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 1px #000000;
+  }
+  
+  .navbar-search-form-pc.is-active-pc .navInputPC {
+    opacity: 1;
+  }
+}
+
+/* --- Hovers Generales y Carrito --- */
+.add-to-cart-btn:hover {
+  background-color: #FF5722 !important;
+}
+
+.premium-cart-btn:hover {
+  background-color: #FF5722 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 87, 34, 0.3);
+}
+
+.carousel-arrows button:hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+.hover-orange:hover {
+  color: #FF5722 !important;
+}
+
+/* --- Catálogo y Animaciones de Tarjetas --- */
+.card-hover-box:hover .card {
+  transform: scale(1.06);
+  z-index: 50;
+  border-color: #FF5722;
+  box-shadow: 0 25px 50px rgba(255, 87, 34, 0.15);
+}
+
+.product-card-pop:hover {
+  transform: translateY(-8px);
+  border-color: #FF5722 !important;
+}
+
+.catalog-card-premium {
+  position: relative;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.catalog-card-premium:hover {
+  transform: scale(1.04) translateY(-5px);
+  z-index: 10;
+  border-color: #FF5722 !important;
+  box-shadow: 0 20px 40px rgba(255, 87, 34, 0.12);
+}
+
+/* Efecto zoom de la bota interna en hover */
+.catalog-card-premium:hover .imageSection img {
+  transform: scale(1.1) rotate(-3deg);
+}
+
+/* REVELADO DE CORTINA OSCURA (Ver Detalles / Ojo) EN PC */
+.card-overlay-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Cortina translúcida */
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none; /* Evita que interrumpa clicks del contenedor */
+}
+
+.card-overlay-view span {
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+/* Al pasar el mouse por encima de la Card, la cortina se vuelve visible */
+.catalog-card-premium:hover .card-overlay-view {
+  opacity: 1;
+}
+
+/* Paginación, Detalle y Footer hovers */
+.catalog-container-media button:hover {
+  background-color: #FF5722 !important;
+}
+
+.page-number-btn:hover:not(.active-page) {
+  border-color: #FF5722 !important;
+  color: #FF5722 !important;
+  transform: translateY(-2px);
+}
+
+.social-btn:hover {
+  background-color: #FF5722 !important;
+  border-color: #FF5722 !important;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(255, 87, 34, 0.3);
+}
+
+.footer-grid a:hover {
+  color: #ffffff !important;
+}
+
+.back-btn-hover:hover {
+  color: #FF5722 !important;
+}
+
+/* Filtro de desenfoque de fondo para el Drawer del Carrito */
+.cart-overlay-blur {
+  backdrop-filter: blur(8px);
+  transition: opacity 0.3s ease;
+}
+
+
+/* ==========================================================================
+   3. RESPONSIVE DESIGN (MEDIA QUERY ÚNICA UNIFICADA)
+   ========================================================================== */
+@media (max-width: 768px) {
+  
+  html, body, #root, main {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  /* --- Navbar en Celulares --- */
+  .main-navbar {
+    padding: 0 20px !important;
+  }
+
+  .nav-links-desktop, .navbar-search-form-pc {
+    display: none !important; /* Apagamos componentes de PC */
+  }
+
+  .mobile-only-action {
+    display: flex !important; /* Forzamos visualización de lupa y menú */
+  }
+
+  /* Activación del menú de links móvil */
+  .mobile-menu-dropdown {
+    display: flex !important;
+  }
+
+  /* Filtro desenfoque Apple White Premium */
+  .search-backdrop-blur {
+    backdrop-filter: blur(20px);
+  }
+
+  /* --- Sección Hero --- */
+  .hero-split {
+    flex-direction: column !important;
+    height: auto !important;
+  }
+  
+  .hero-split > div {
+    width: 100% !important;
+    height: auto !important;
+  }
+  
+  .hero-split > div:first-child {
+    padding: 60px 24px !important;
+  }
+
+  .hero-split div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+    padding: 20px !important;
+  }
+
+  /* --- Sección Productos Populares --- */
+  .popular-section {
+    height: auto !important;
+    max-height: none !important;
+    padding: 40px 0 40px 20px !important;
+    width: 100% !important;
+  }
+
+  .slider-wrapper-mobile {
+    width: 100% !important;
+    overflow-x: auto !important;
+    padding-right: 20px;
+  }
+
+  .popular-grid {
+    display: flex !important;
+    gap: 15px !important;
+    width: max-content !important;
+    transform: none !important;
+    overflow: visible !important;
+    scrollbar-width: none;
+  }
+
+  .popular-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card-hover-box {
+    flex: 0 0 80vw !important;
+    height: 160px !important;
+  }
+
+  .card-hover-box:hover .card {
+    transform: none !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* --- Tarjetas del Catálogo Horizontales (55% Imagen / 45% Info) --- */
+  .catalog-container-media {
+    padding: 40px 16px !important;
+  }
+
+  .catalog-products-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .catalog-card-premium {
+    flex-direction: row !important;
+    height: 135px !important;
+    border-color: #eeeeee !important;
+  }
+
+  .catalog-card-premium .imageSection {
+    width: 55% !important;
+    height: 100% !important;
+    background-color: #fafafa !important;
+    padding: 10px !important;
+  }
+
+  .catalog-card-premium .imageSection img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+
+  .catalog-card-premium .infoSection {
+    width: 45% !important;
+    height: 100% !important;
+    padding: 12px 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .catalog-card-premium .productName {
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+    margin-top: 2px !important;
+    display: -webkit-box !important;
+    WebkitLineClamp: 2 !important;
+    WebkitBoxOrient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .catalog-card-premium .brandTag { font-size: 9px !important; }
+  .catalog-card-premium .priceTag { font-size: 14px !important; }
+  .catalog-card-premium .buyBtn { width: 32px !important; height: 32px !important; }
+
+  .catalog-card-premium:hover {
+    transform: none !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05) !important;
+  }
+  
+  .catalog-card-premium:hover .imageSection img { transform: none !important; }
+
+  /* --- Ajustes Adaptables para la Vista Detalle de Producto --- */
+  .detail-main-split {
+    flex-direction: column !important;
+    height: auto !important; /* Libera las restricciones 100vh fijas */
+  }
+
+  .detail-main-split > div {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .detail-image-box {
+    height: 320px !important; /* Espacio ideal adaptado para smartphones */
+    padding: 20px !important;
+    cursor: default !important; /* Apaga indicador de lupa en touch sliders */
+  }
+
+  .detail-image-box img {
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+
+  .detail-info-box {
+    padding: 30px 20px !important;
+  }
+
+  .productTitle {
+    font-size: 26px !important; /* Compresión tipográfica adaptativa */
+    margin-bottom: 12px !important;
+  }
+
+  .detail-info-box .divider {
+    margin: 20px 0 !important;
+  }
+
+  .detail-info-box .addToCartBtn {
+    margin-top: 30px !important;
+  }
+
+  .recHeader {
+    padding: 0 20px !important;
+  }
+
+  .recTitle {
+    font-size: 18px !important;
+  }
+
+  /* --- Ajustes Adaptables del Nuevo Carrito Lateral --- */
+  .cart-sidebar-responsive {
+    width: 100vw !important; /* Ocupa todo el ancho horizontal en celulares */
+  }
+  
+  .cart-sidebar-responsive header {
+    padding: 20px 16px !important;
+  }
+  
+  .cart-sidebar-responsive .itemsContainer {
+    padding: 0 16px !important;
+  }
+
+  /* Paginación y Footer Móvil */
+  .pagination-box { margin-top: 35px !important; gap: 6px !important; }
+  .page-number-btn { width: 36px !important; height: 36px !important; font-size: 13px !important; }
+  .footer-grid { grid-template-columns: 1fr !important; gap: 30px !important; }
+  nav[style*="footerContainer"] { padding: 40px 20px 20px 20px !important; }
+  .footer-bottom { flex-direction: column !important; gap: 12px !important; text-align: center; }
+}
+
