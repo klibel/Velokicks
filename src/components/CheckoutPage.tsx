@@ -456,7 +456,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   statusSection: { flex: '1 1 360px', display: 'flex', flexDirection: 'column', gap: '24px', minWidth: '280px' },
   statusTitle: { fontSize: '13px', fontWeight: 900, letterSpacing: '1.5px', margin: 0, color: '#000000' },
   
-  cardContainer3D: { width: '100%', height: '260px', perspective: '1200px' },
+  cardContainer3D: { width: '100%', height: '250px', perspective: '1200px' },
   cardFlipInner: { width: '100%', height: '100%', position: 'relative', transformStyle: 'preserve-3d', transition: 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)' },
   
   cardFront: { position: 'absolute', width: '100%', height: '100%', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', backgroundColor: '#000000', borderRadius: '16px', padding: '28px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', color: '#ffffff', boxShadow: '0 20px 40px rgba(0,0,0,0.12)' },
@@ -468,7 +468,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   chipInnerCore: { position: 'absolute', top: '25%', left: '25%', width: '50%', height: '50%', border: '1px solid #aa871e', borderRadius: '3px' },
 
   cardTypeLabel: { fontSize: '9px', fontWeight: 800, letterSpacing: '2px', color: '#aaaaaa' },
-  cardNumberDisplay: { fontSize: '19px', fontWeight: 700, letterSpacing: '3px', margin: '20px 0', color: '#ffffff', fontFamily: 'monospace' },
+  cardNumberDisplay: { fontSize: '17px', fontWeight: 700, letterSpacing: '3px', margin: '20px 0', color: '#ffffff', fontFamily: 'monospace', width: '100%', textAlign: 'center' },
   cardFooterDisplay: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
   cardMiniLabel: { fontSize: '8px', color: '#777777', letterSpacing: '1px', marginBottom: '2px' },
   cardHolderText: { fontSize: '12px', fontWeight: 700, letterSpacing: '1px' },
